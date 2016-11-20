@@ -88,7 +88,7 @@ case class Application(funcExpr: Expression, argument: Expression) extends Expre
   *     In our case we are returning Expression type objects
   * It is the parsers job to convert the input to the correct output
   */
-class LambdaExprParser extends RegexParsers with PackratParsers{
+class LambdaParser extends RegexParsers with PackratParsers{
     // This should help up
 
     val lexical = new StdLexical

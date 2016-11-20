@@ -2,7 +2,7 @@ package com.hw4
 
 import scala.io.StdIn
 import Utils.instructions
-import com.hw4.parser.LambdaExprParser
+import com.hw4.parser.LambdaParser
 
 /**
   * Created by krbalmryde on 11/18/16.
@@ -10,7 +10,7 @@ import com.hw4.parser.LambdaExprParser
 
 object Main extends App {
 
-    val exprParser = new LambdaExprParser()
+    val exprParser = new LambdaParser()
 
     println(instructions)
     while(true) {
@@ -26,26 +26,10 @@ object Main extends App {
             // Display the Intructions
             case "h" | "help"  => println(instructions)
 
-            // Something silly
-            case "hello" => {
-                println("Hello, HW4!")
-
-                println("Things to look for in Combinators")
-                for ( wrd <- List("StdTokenParsers", "StdLexical", "PackratParsers"))
-                    println(s"\t$wrd")
-
-                println("You should extend StdTokenParsers")
-                println("Implement all of its abstract methods")
-                println("Specify which characters in the input string are delimiters")
-            }
-
-            // Acknowledge the lambda symbols
-            case "λ" => println("ooh the Greek letter, lambda! Fancy")
-            case "lambda" => println("did you know the Greek letter is λ ?")
-
+            // Parse the actual input!
             case input => {
-                val result = new LambdaExprParser()(input)
-                println(result)
+                val result = new LambdaParser()(input)
+                println(s"Parsed: $result")
             }
         }
 
