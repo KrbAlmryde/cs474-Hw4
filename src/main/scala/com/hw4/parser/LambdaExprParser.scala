@@ -32,7 +32,6 @@ package com.hw4.parser
 import scala.util.parsing.combinator._
 import scala.util.parsing.combinator.lexical.StdLexical
 import scala.util.parsing.combinator.syntactical.StdTokenParsers
-import scala.util.parsing.input.CharSequenceReader
 
 /**
   * We really only need these 3 patterns since everything builds off
@@ -95,7 +94,8 @@ class LambdaExprParser extends RegexParsers with PackratParsers{
     val lexical = new StdLexical
     lexical.delimiters ++= Seq("lambda", "λ", "\\", ".", "(", ")", ";")
 
-    lazy val expr:PackratParser[Expression] = name | func | application | parens
+    lazy val expr:PackratParser[Expression] = application | other
+    lazy val other:PackratParser[Expression] = name | parens | func
 
     // A single variable, can be one to many characters, starting with an alpha-char
     lazy val name:PackratParser[Variable] = """[a-zA-Z]+\w*""".r ^^ { case v => Variable(v) }
