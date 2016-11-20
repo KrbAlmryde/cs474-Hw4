@@ -95,7 +95,7 @@ class LambdaExprParser extends RegexParsers with PackratParsers{
     lexical.delimiters ++= Seq("lambda", "λ", "\\", ".", "(", ")", ";")
 
     lazy val expr:PackratParser[Expression] = application | other
-    lazy val other:PackratParser[Expression] = name | parens | func
+    lazy val other:PackratParser[Expression] = func | name | parens
 
     // A single variable, can be one to many characters, starting with an alpha-char
     lazy val name:PackratParser[Variable] = """[a-zA-Z]+\w*""".r ^^ { case v => Variable(v) }
