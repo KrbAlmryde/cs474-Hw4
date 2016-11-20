@@ -2,7 +2,7 @@ package com.hw4
 
 import scala.io.StdIn
 import Utils.instructions
-
+import com.hw4.parser.LambdaExprParser
 
 /**
   * Created by krbalmryde on 11/18/16.
@@ -10,6 +10,7 @@ import Utils.instructions
 
 object Main extends App {
 
+    val exprParser = new LambdaExprParser()
 
     println(instructions)
     while(true) {
@@ -42,8 +43,17 @@ object Main extends App {
             case "λ" => println("ooh the Greek letter, lambda! Fancy")
             case "lambda" => println("did you know the Greek letter is λ ?")
 
-            case _ => println("I dont know what that means!")
+            case input => {
+                val result = new LambdaExprParser()(input)
+                println(result)
+            }
         }
+
+
+
+
+
+
     }
 
 }

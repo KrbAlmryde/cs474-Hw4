@@ -48,8 +48,8 @@ I could not have gotten far on this assignment without the wonderful tutorials a
 
 + Erkki Lindpere's ["Parsing Lambda Calculus in Scala"](http://zeroturnaround.com/rebellabs/parsing-lambda-calculus-in-scala/) blog and associated[Github](https://github.com/Villane/lambdacalculus)
 + François Sarradin's ["Playing with Scala Parser Combinator"](https://kerflyn.wordpress.com/2012/08/25/playing-with-scala-parser-combinator/) blog post
-+ [Dr. Cay Horstmann](http://horstmann.com/)'s `cs256 lectures` [1](http://horstmann.com/sjsu/fall2009/cs252/lambda1/)[2](http://horstmann.com/sjsu/fall2009/cs252/lambda2/)and [3](http://horstmann.com/sjsu/fall2009/cs252/lambda3/) and [Sample Code](http://horstmann.com/sjsu/fall2009/cs252/lambda.scala) (He had some nice practice problems)
-+ Christoph Henkelmann’s `"An Introduction To Scala Parser Combinators"` Part [1](http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators) [2](http://henkelmann.eu/2011/01/28/an_introduction_to_scala_parser_combinators-part_2_literal_expressions) and [3](http://henkelmann.eu/2011/01/29/an_introduction_to_scala_parser_combinators-part_3_unit_tests)Blog
++ [Dr. Cay Horstmann](http://horstmann.com/)'s `cs256 lectures` [1](http://horstmann.com/sjsu/fall2009/cs252/lambda1/), [2](http://horstmann.com/sjsu/fall2009/cs252/lambda2/), [3](http://horstmann.com/sjsu/fall2009/cs252/lambda3/), and [Sample Code](http://horstmann.com/sjsu/fall2009/cs252/lambda.scala) (He had some nice practice problems)
++ Christoph Henkelmann’s `"An Introduction To Scala Parser Combinators"` Blog, Parts [1](http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators), [2](http://henkelmann.eu/2011/01/28/an_introduction_to_scala_parser_combinators-part_2_literal_expressions), and [3](http://henkelmann.eu/2011/01/29/an_introduction_to_scala_parser_combinators-part_3_unit_tests)
 
 
 ---

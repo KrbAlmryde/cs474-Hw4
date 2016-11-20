@@ -19,6 +19,7 @@ package object Utils {
           |${Console.BLUE}
           |      lambda x.(lambda y.(x y)) 3) square)
           |            λx.(λy.(x y)) 3) square)
+          |            \\x.(\\y.(x y)) 3) square)
           |${Console.WHITE}
           |Available options include:
           |     -v  For additional (re: verbose) information about the expression
@@ -26,7 +27,8 @@ package object Utils {
           |      Note: Options should follow an expression i.e.,
           |${Console.BLUE}
           |        lambda x.(lambda y.(x y)) 3) square)${Console.RED} -v${Console.BLUE}
-          |            λx.(λy.(x y)) 3) square)${Console.RED} -v
+          |            λx.(λy.(x y)) 3) square)${Console.RED} -v${Console.BLUE}
+          |            \\x.(\\y.(x y)) 3) square)${Console.RED} -v
           |${Console.WHITE}
           |Available commands include:
           |${Console.GREEN}
