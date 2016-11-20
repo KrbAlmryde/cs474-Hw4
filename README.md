@@ -2,18 +2,18 @@
 Author: **Kyle R. Almryde**
 
 
-### Preamble
+## Preamble
 
 This README documents the installation and usage for the cs474 HW4 tasked with developing an untyped lambda-calculus interpreter in scala. Read on!
 
-#### What is this repository for?
+### What is this repository for?
 
 
-#### Libraries
+### Libraries
 
 ---
 
-### How do I get set up?
+## How do I get set up?
 
 ####Setting up from IntelliJ ####
 
@@ -27,7 +27,7 @@ This README documents the installation and usage for the cs474 HW4 tasked with d
 
 ---
 
-### Development Testing
+## Development Testing
 
 #### Unit Testing
 For Unit-testing I utilized Akka's Actor Testkit[ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. The Akka Testkit was no walk in the park though, so forgive the stupid simple tests.
@@ -53,7 +53,7 @@ I could not have gotten far on this assignment without the wonderful tutorials a
 ---
 
 
-### Who do I talk to? ###
+## Who do I talk to?
 
 * If you have any specific questions contact me via [kyle.almryde@gmail.com](mailto:kyle.almryde@gmail.com)
 * If you have any complaints, please direct them to this [Handsome devil](mailto:drmark@uic.edu) ![drmark@uic.edu](https://www.cs.uic.edu/~drmark/index_htm_files/3017.jpg)
