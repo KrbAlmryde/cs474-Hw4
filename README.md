@@ -2,13 +2,14 @@
 Author: **Kyle R. Almryde**
 
 
-#### Preamble
+### Preamble
 
 This README documents the installation and usage for the cs474 HW4 tasked with developing an untyped lambda-calculus interpreter in scala. Read on!
 
-### What is this repository for? ###
+#### What is this repository for?
 
-### Libraries
+
+#### Libraries
 
 ---
 
@@ -24,8 +25,9 @@ This README documents the installation and usage for the cs474 HW4 tasked with d
 
 4) On the next page of the wizard, specify SBT project settings and global SBT settings, click **Finish**.
 
+---
 
-#### Development Testing
+### Development Testing
 
 #### Unit Testing
 For Unit-testing I utilized Akka's Actor Testkit[ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. The Akka Testkit was no walk in the park though, so forgive the stupid simple tests.
@@ -34,8 +36,12 @@ Go figure.
 
 To run the tests, in Intellij simplly select the **SBT** task "Test" and youll be up and running! Que sera
 
+---
 
 ## Discussion:
+
+---
+
 
 ## References and Sources
 I could not have gotten far on this assignment without the wonderful tutorials and example code provided by these lovely people
@@ -43,6 +49,9 @@ I could not have gotten far on this assignment without the wonderful tutorials a
 * François Sarradin's ["Playing with Scala Parser Combinator"](https://kerflyn.wordpress.com/2012/08/25/playing-with-scala-parser-combinator/) blog post
 * [Dr. Cay Horstmann](http://horstmann.com/)'s `cs256 lectures` [1](http://horstmann.com/sjsu/fall2009/cs252/lambda1/)[2](http://horstmann.com/sjsu/fall2009/cs252/lambda2/)and [3](http://horstmann.com/sjsu/fall2009/cs252/lambda3/) and [Sample Code](http://horstmann.com/sjsu/fall2009/cs252/lambda.scala) (He had some nice practice problems)
 * Christoph Henkelmann’s `"An Introduction To Scala Parser Combinators"` Part [1](http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators) [2](http://henkelmann.eu/2011/01/28/an_introduction_to_scala_parser_combinators-part_2_literal_expressions) and [3](http://henkelmann.eu/2011/01/29/an_introduction_to_scala_parser_combinators-part_3_unit_tests)Blog
+
+---
+
 
 ### Who do I talk to? ###
 
