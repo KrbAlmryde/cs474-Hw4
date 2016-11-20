@@ -1,0 +1,10 @@
+*.class
+*.iml
+*.ipr
+*.iws
+.idea
+target/
+project/
+out/
+.DS_Store
+
