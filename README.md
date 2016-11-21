@@ -29,6 +29,16 @@ This README documents the installation and usage for the cs474 HW4 tasked with d
 
 ## Development Testing
 
+Some Example inputs and their evaluation steps
+```
+> (λc.λd.λe.c d e) (λx.λy.x) a b
+= (λc.λd.λe.c d e) (λx.λy.x) a b
+= (λd.λe.(λx.λy.x) d e) a b
+= (λe.(λx.λy.x) a e) b
+= (λx.λy.x) a b
+= (λy.a) b
+= a
+```
 #### Unit Testing
 For Unit-testing I utilized Akka's Actor Testkit[ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. The Akka Testkit was no walk in the park though, so forgive the stupid simple tests.
 

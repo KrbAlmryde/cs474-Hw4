@@ -3,7 +3,7 @@ package com.hw4
 import scala.io.StdIn
 import Utils.instructions
 import com.hw4.evaluator.LambdaEvaluator
-import com.hw4.parser.LambdaParser
+import com.hw4.parser.{Expression, LambdaParser, Variable}
 
 /**
   * Created by krbalmryde on 11/18/16.
@@ -12,7 +12,7 @@ import com.hw4.parser.LambdaParser
 object ExprPrs extends LambdaParser {
 
     def main(args: Array[String]): Unit = {
-
+        val evaluator = new LambdaEvaluator()
         println(instructions)
 
         while(true) {
@@ -27,20 +27,18 @@ object ExprPrs extends LambdaParser {
                 // Display the Intructions
                 case "h" | "help"  => println(instructions)
 
-                // Parse the actual input!
-                case input => {
-//                    val result = exprParser.parse(input)
 
-                    // In case we need it
-                    // val result = new LambdaParser()(input)
-                    // val evaluator = new LambdaEvaluator(result)
-                    println(s"Parsed: ${ExprPrs.parse(input)} ")
+                // Parse the actual input!
+                case input:String => {
+                    parseAll(expression, input) match {
+                        case Success(result: Expression, _) => {
+                            println(s"\nParsed: ${evaluator(result)}")
+                        }
+                        case err:NoSuccess => println(s"Malformed input: " + err )
+                    }
                 }
             }
         }
 
     }
-    val exprParser = new LambdaParser()
-
-
 }
