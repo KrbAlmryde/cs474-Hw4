@@ -63,7 +63,6 @@ case class Variable(name:String) extends Expression {
     def freeVars: Set[Variable] = Set(this)
     def boundVars: Set[Variable] = Set()
     override def toString = name
-
 }
 
 
@@ -74,6 +73,7 @@ case class Lambda(arg: Variable, body: Expression) extends Expression {
     def boundVars: Set[Variable] = body.boundVars + arg
     override def toString = s"λ$arg.$body"
 }
+
 
 // Application pattern
 case class Application(funcExpr: Expression, argument: Expression) extends Expression {
@@ -106,13 +106,8 @@ case class Application(funcExpr: Expression, argument: Expression) extends Expre
 class LambdaParser extends RegexParsers with PackratParsers{
     // This should help up
 
-    val lexical = new StdLexical
-    lexical.delimiters ++= Seq("lambda", "λ", "\\", ".", "(", ")", ";")
-
-//    lazy val expr:PackratParser[Expression] = application | other
-//    lazy val other:PackratParser[Expression] = func | name | parens
-//    lazy val expr:PackratParser[Expression] = application | terms
-//    lazy val terms:PackratParser[Expression] = function | parens | name
+//    val lexical = new StdLexical
+//    lexical.delimiters ++= Seq("lambda", "λ", "\\", ".", "(", ")", ";")
 
     lazy val expression:PackratParser[Expression] = application | remainder
     lazy val remainder:PackratParser[Expression] = function | name | "(" ~> expression <~ ")"
@@ -120,7 +115,7 @@ class LambdaParser extends RegexParsers with PackratParsers{
 
 
     // A single variable, can be one to many characters, starting with an alpha-char
-    lazy val name:PackratParser[Variable] = """[a-zA-Z]+\w*""".r ^^ (v => Variable(v))
+    lazy val name:PackratParser[Variable] = """[a-zA-Z\w]+""".r ^^ (v => Variable(v))
 
     // lambda/λ/\<name>. <expression>   expression is a simple abstraction over body, saves us from typing anything // Here we have a regex to capture the lambda symbol
     lazy val function:Parser[Expression] = """(lambda\s|λ|\\)""".r ~> rep1(name) ~ "." ~ expression ^^ { case arg~"."~expr => (arg :\ expr) { Lambda } }
