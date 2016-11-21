@@ -51,32 +51,47 @@ import scala.util.parsing.combinator.syntactical.StdTokenParsers
   *          )
   * */
 sealed trait Expression {
+//    def substitue(parent:Variable, child:Expression): Expression
     def eval: String
+    def freeVars: Set[Variable]
+    def boundVars: Set[Variable]
 }
 
-// Lambda pattern(s)
-case class Lambda(name: String, body: Expression) extends Expression {
-    def eval = name + body.eval
-    override def toString = s"λ$name.$body"
-}
-
-// Variable patterns(s)
+// Variable patterns
 case class Variable(name:String) extends Expression {
     def eval = name
+    def freeVars: Set[Variable] = Set(this)
+    def boundVars: Set[Variable] = Set()
     override def toString = name
+
+}
+
+
+// Lambda pattern
+case class Lambda(arg: Variable, body: Expression) extends Expression {
+    def eval = s"$arg ${body.eval}"
+    def freeVars: Set[Variable] =  body.freeVars - arg
+    def boundVars: Set[Variable] = body.boundVars + arg
+    override def toString = s"λ$arg.$body"
 }
 
 // Application pattern
 case class Application(funcExpr: Expression, argument: Expression) extends Expression {
-    def eval = funcExpr.eval + argument.eval
+    def eval = "_"+funcExpr.eval + argument.eval + "_"
+    def freeVars: Set[Variable] = funcExpr.freeVars ++ argument.freeVars
+    def boundVars: Set[Variable] = funcExpr.boundVars ++ argument.boundVars
 
     override def toString = {
+        // Left side
         (funcExpr match {
             case Lambda(_, _) => "(" + funcExpr + ")"
             case _ => funcExpr
+
+        // Right side
         }) + " " + (argument match {
             case Variable(_) => argument
             case _ => "(" + argument + ")"
+
         })
     }
 }
@@ -94,24 +109,42 @@ class LambdaParser extends RegexParsers with PackratParsers{
     val lexical = new StdLexical
     lexical.delimiters ++= Seq("lambda", "λ", "\\", ".", "(", ")", ";")
 
-    lazy val expr:PackratParser[Expression] = application | other
-    lazy val other:PackratParser[Expression] = func | name | parens
+//    lazy val expr:PackratParser[Expression] = application | other
+//    lazy val other:PackratParser[Expression] = func | name | parens
+//    lazy val expr:PackratParser[Expression] = application | terms
+//    lazy val terms:PackratParser[Expression] = function | parens | name
+
+    lazy val expression:PackratParser[Expression] = application | remainder
+    lazy val remainder:PackratParser[Expression] = function | name | "(" ~> expression <~ ")"
+
+
 
     // A single variable, can be one to many characters, starting with an alpha-char
-    lazy val name:PackratParser[Variable] = """[a-zA-Z]+\w*""".r ^^ { case v => Variable(v) }
+    lazy val name:PackratParser[Variable] = """[a-zA-Z]+\w*""".r ^^ (v => Variable(v))
 
-    // lambda/λ/\<name>. <expression>   expression is a simple abstraction over body, saves us from typing anything
-    // Here we have a regex to capture the lambda symbol
-    lazy val func:PackratParser[Lambda] =  """(lambda\s|λ|\\)""".r ~> name ~ """\.""".r ~ expr ^^ { case l~"."~b => Lambda(l.eval, b) }
-    lazy val application:PackratParser[Application] = expr ~ expr ^^ { case args: ~[Expression, Expression] => Application(args._1, args._2) }
-    lazy val parens:PackratParser[Expression] = "(" ~> expr <~ ")"
+    // lambda/λ/\<name>. <expression>   expression is a simple abstraction over body, saves us from typing anything // Here we have a regex to capture the lambda symbol
+    lazy val function:Parser[Expression] = """(lambda\s|λ|\\)""".r ~> rep1(name) ~ "." ~ expression ^^ { case arg~"."~expr => (arg :\ expr) { Lambda } }
 
-    def parse(str: String): ParseResult[Expression] = {
-        val tokens = new lexical.Scanner(str)
-//        phrase(expr)(str)
-        parseAll(expr, str)
+    lazy val application:PackratParser[Expression] = remainder ~ rep1(remainder) ^^ { case exp1 ~ exp2 => ( exp1 /: exp2) { (app, e) => Application(app, e) } }
+
+
+//    lazy val constant: Parser[Expression] = [^a-z\\λ\(\)\s\.']+""".r ^^ { Expression }
+
+
+//    def expr: Parser[Expression] = ("""(lambda\s|λ|\\)""".r ~> """[a-zA-Z]+\w*""".r <~ ".") ~ expr ^^ { case param ~ body => Lambda(param, body) }  | term
+//    def term: Parser[Expression] = factor ~ rep(factor) ^^ { case a ~ lst => {
+//        println(s"A( $a /: $lst )") ; (a /: lst) { Application }
+//    } } //
+//    def factor: Parser[Expression] = """[a-zA-Z]+\w*""".r ^^ { Variable } | "(" ~> expr <~ ")"
+//
+
+    def parse(str: String): Expression = parseAll(expression, str) match {
+        case Success(result: Expression, _) => result
+        case err:NoSuccess => println(s"Malformed input: " + err )
+            Variable("")
     }
-    def apply(str:String): Expression = parseAll(expr, str) match {
+
+    def apply(str:String): Expression = parseAll(expression, str) match {
         case Success(result: Expression, _) => result
         case err:NoSuccess => println(s"Malformed input: " + err )
             Variable("")

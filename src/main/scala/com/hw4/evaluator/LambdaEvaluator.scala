@@ -1,12 +1,20 @@
 package com.hw4.evaluator
 
-import com.hw4.parser.Expression
+import com.hw4.parser._
 import com.hw4.parser.LambdaParser
-import scala.util.parsing.combinator.RegexParsers
+
 
 /**
   * Created by krbalmryde on 11/20/16.
   */
-class LambdaEvaluator(result: LambdaParser) extends RegexParsers{
+class LambdaEvaluator(result: Expression) {
 
+    def apply(expr: Expression):String = {
+        "Implement Me!"
+    }
+
+    def substitute(arg: Variable, expr: Expression ): Expression = {
+
+        Variable("")
+    }
 }

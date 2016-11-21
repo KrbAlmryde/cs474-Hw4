@@ -17,18 +17,18 @@ package object Utils {
           |${Console.WHITE}
           |To use this tool type an expression such as the following:
           |${Console.BLUE}
-          |      lambda x.(lambda y.(x y)) 3) square)
-          |            λx.(λy.(x y)) 3) square)
-          |            \\x.(\\y.(x y)) 3) square)
+          |      (lambda x.(lambda y.(x y)) 3) square
+          |            (λx.(λy.(x y)) 3) square
+          |            (\\x.(\\y.(x y)) 3) square
           |${Console.WHITE}
           |Available options include:
           |     -v  For additional (re: verbose) information about the expression
           |
           |      Note: Options should follow an expression i.e.,
           |${Console.BLUE}
-          |        lambda x.(lambda y.(x y)) 3) square)${Console.RED} -v${Console.BLUE}
-          |            λx.(λy.(x y)) 3) square)${Console.RED} -v${Console.BLUE}
-          |            \\x.(\\y.(x y)) 3) square)${Console.RED} -v
+          |        (lambda x.(lambda y.(x y)) 3) square${Console.RED} -v${Console.BLUE}
+          |            (λx.(λy.(x y)) 3) square${Console.RED} -v${Console.BLUE}
+          |            (\\x.(\\y.(x y)) 3) square${Console.RED} -v
           |${Console.WHITE}
           |Available commands include:
           |${Console.GREEN}
