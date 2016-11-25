@@ -13,8 +13,8 @@ object Main extends LambdaParser {
 
 
     def main(args: Array[String]): Unit = {
-        var verbose:Boolean = false;
-        val evaluator = new LambdaEvaluator()
+
+        val evaluator = new LambdaEvaluator(false)
         println(instructions)
 
         while (true) {
@@ -30,15 +30,19 @@ object Main extends LambdaParser {
                     println(instructions)
 
                 case "v" | "verbose" | "d" | "debug" =>
-                    verbose = !verbose
-                    println(s"Verbose mode set to: $verbose")
-
+                    evaluator.verbose = !evaluator.verbose
+                    println(s"Verbose mode set to: ${evaluator.verbose}")
+                case "def" | "defs" =>
+                    println("definitions are:")
+                    evaluator.definitions.foreach( d => {
+                        println(s"${d._1} = ${d._2}")
+                    })
 
                 // Parse the actual input!
                 case input: String =>
                     val parsed =  Main.parse(input)
-                    val result = evaluator(parsed, verbose)
-                    println(s"\n>: ${result} :<")
+                    val result = evaluator(parsed)
+                    println(s"\n>: $result :<")
             }
         }
 

@@ -14,40 +14,74 @@ import scala.collection.mutable
   *                      Eta conversion
   *
   */
-class LambdaEvaluator() {
+class LambdaEvaluator(var verbose:Boolean) {
     val definitions:mutable.Map[Variable,Expression] = mutable.Map[Variable,Expression]()
 
-    def apply(expr: Expression, verbose:Boolean = false):Expression = {
-        expr match {
+
+    def apply(expr: Expression):Expression = {
+        println(s"apply: $expr")
+
+        evaluate(expr) match {
             case declared:Assignment =>
+                println(s"\tAssn: $declared" )
                 // append defined variables so we can keep track of them
                 definitions++=mutable.Map[Variable,Expression](declared.identifier -> declared.expr)
                 // evaluate(declared, verbose)
                 declared // testing to see if this has an effect
+
             case single:Variable =>
+
                 if (definitions contains single) {
                     val defs = definitions(single)
-                    evaluate(substitution(Assignment(single, defs), single, defs), verbose)
+                    evaluate(substitution(Assignment(single, defs), single, defs))
                 }
-                else evaluate(single, verbose)
-            case app @Application(fn, arg) =>
-                //                println(s"App definition? $app")
-                fn match {
-                    case nm:Variable =>
-                        //                        println("yep-apply")
-                        apply(Application(hasDefinition(nm), arg), verbose);
-                    case _ => evaluate(expr, verbose)
+                else evaluate(single)
+
+            case app@Application(fn, arg)=>
+                println(s"\t $app")
+                app match {
+                    case Application(fn:Variable, arg:Variable) =>
+                        println(s"\t\t App(V, V) => $fn | $arg")
+                        apply(
+                            Application(
+                                hasDefinition(fn),
+                                hasDefinition(arg)
+                            )
+                        )
+
+                    case Application(fn:Variable, _) =>
+                        println(s"\t\t App(V, _) => $fn {$arg}")
+                        evaluate(
+                            Application(
+                                hasDefinition(fn),
+                                arg
+                            )
+                        )
+                        // fn is anything, arg is Variable
+                    case Application(_, arg:Variable) =>
+                        println(s"\t\t App(_, V) => {$fn} $arg")
+                        evaluate(
+                            Application(
+                                fn,
+                                hasDefinition(arg)
+                            )
+                        )
+                    // if its anything else, go strait to evaluation
+                    case _ =>
+                        println(s"\t\t App(_, _)")
+                        evaluate(app)
                 }
-            case any => evaluate(any, verbose)
+
+            case any => evaluate(any)
         }
     }
 
-    def evaluate(expr: Expression, verbose:Boolean): Expression = {
+    def evaluate(expr: Expression): Expression = {
         printDebug(verbose, s"   $expr")
         val beta = β(expr)
         if (beta != expr) {
             printDebug(verbose, s"   $expr ${Console.BOLD}=> ${Console.RED}*-β*- ${Console.WHITE}")
-            apply(beta, verbose)
+            apply(beta)
         }
         else {
             val eta = η(expr)
@@ -61,6 +95,7 @@ class LambdaEvaluator() {
     def hasDefinition(name:Variable):Expression = {
         if (definitions contains name) {
             val defs = definitions(name)
+            println(s"\t\t$name == $defs")
             substitution(Assignment(name, defs), name, defs)
         }
         else

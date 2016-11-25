@@ -62,13 +62,13 @@ case class Application(funcExpr: Expression, argument: Expression) extends Expre
     override def toString = {
         // Left side
         (funcExpr match {
-            case Lambda(_, _) => "(" + funcExpr + ")"
+            case Lambda(_, _) => "A(" + funcExpr + ")"
             case _ => funcExpr
 
         // Right side
         }) + " " + (argument match {
             case Variable(_) => argument
-            case _ => "(" + argument + ")"
+            case _ => "_A(" + argument + ")"
 
         })
     }
