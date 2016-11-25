@@ -9,6 +9,15 @@ import scala.util.parsing.combinator.{Parsers, RegexParsers}
   */
 
 package object Utils {
+    /*
+        Shorthand for color definitions to make things more readable
+        r: red
+        g: green
+        b: blue
+        y: yellow
+        l: white
+        w:
+     */
 
     val instructions =
         s"""
@@ -40,6 +49,19 @@ package object Utils {
           |λ -- Starting the Lambda calculus Interpreter -- λ
           |
         """.stripMargin
+
+
+    /**
+      * Handy function that manages the logic of determining if the application should print output
+      * That is, if isVerbose is true, print the supplied string, otherwise dont.
+      * @param isVerbose Boolean: if true we should print, otherwise dont
+      * @param expr String: The string to be printed. String should include \n characters if needed
+      */
+    def printDebug(isVerbose:Boolean, expr:String): Unit = {
+        if(isVerbose) print(expr)
+    }
+
+
     /**
       * Convenience function which gives me the current working directory
       * @return

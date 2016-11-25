@@ -39,6 +39,17 @@ Some Example inputs and their evaluation steps
 = (λy.a) b
 = a
 ```
+
+```
+(\m.\n.\f.\x.m f (n f x)) (\f.\x.f x) (\f.\x.f (f x))
+(λm.λn.λf.λx.m f (n f x)) (λf.λx.f x) (λf.λx.f (f x))
+(λn.λf.λx.(λf.λx.f x) f (n f x)) (λf.λx.f (f x))
+λf.λx.(λf.λx.f x) f ((λf.λx.f (f x)) f x)
+λf.λx.(λx.f x) ((λf.λx.f (f x)) f x)
+λf.λx.f ((λf.λx.f (f x)) f x)
+λf.λx.f ((λx.f (f x)) x)
+λf.λx.f (f (f x))
+```
 #### Unit Testing
 For Unit-testing I utilized Akka's Actor Testkit[ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. The Akka Testkit was no walk in the park though, so forgive the stupid simple tests.
 
@@ -54,13 +65,13 @@ To run the tests, in Intellij simplly select the **SBT** task "Test" and youll b
 
 
 ## References and Sources
-I could not have gotten far on this assignment without the wonderful tutorials and example code provided by these lovely people (In no particular order)
+I could not have gotten as far on this assignment as I did without the wonderful tutorials and example code provided by these lovely people (In no particular order)
 
 + Erkki Lindpere's ["Parsing Lambda Calculus in Scala"](http://zeroturnaround.com/rebellabs/parsing-lambda-calculus-in-scala/) blog and associated[Github](https://github.com/Villane/lambdacalculus)
 + François Sarradin's ["Playing with Scala Parser Combinator"](https://kerflyn.wordpress.com/2012/08/25/playing-with-scala-parser-combinator/) blog post
 + [Dr. Cay Horstmann](http://horstmann.com/)'s `cs256 lectures` [1](http://horstmann.com/sjsu/fall2009/cs252/lambda1/), [2](http://horstmann.com/sjsu/fall2009/cs252/lambda2/), [3](http://horstmann.com/sjsu/fall2009/cs252/lambda3/), and [Sample Code](http://horstmann.com/sjsu/fall2009/cs252/lambda.scala) (He had some nice practice problems)
 + Christoph Henkelmann’s `"An Introduction To Scala Parser Combinators"` Blog, Parts [1](http://henkelmann.eu/2011/01/13/an_introduction_to_scala_parser_combinators), [2](http://henkelmann.eu/2011/01/28/an_introduction_to_scala_parser_combinators-part_2_literal_expressions), and [3](http://henkelmann.eu/2011/01/29/an_introduction_to_scala_parser_combinators-part_3_unit_tests)
-
++ Jesse Hallet's [implementation](https://github.com/hallettj/LambdaCalculus) was also a very helpful resource.
 
 ---
 
