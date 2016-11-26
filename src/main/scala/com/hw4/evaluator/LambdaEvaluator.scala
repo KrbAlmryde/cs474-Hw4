@@ -138,7 +138,7 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
                     substitute(Assignment(name, defs), name, defs)
 
                 } else if (orig == name) {
-                    printDebug(s"${Console.BOLD}=> ${Console.BLUE} $sub ${Console.WHITE}for${Console.GREEN} $name\n${Console.WHITE}")
+                    printDebug(s"${Console.BOLD}=> substitute ${Console.BLUE} $sub ${Console.WHITE}for${Console.GREEN} $name\n${Console.WHITE}")
                     sub
                 } else {
                     name
@@ -146,7 +146,7 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
 
             case declared:Assignment =>
                 if (orig == declared.identifier) {
-                    printDebug(s" ${Console.BOLD}=> ${Console.BLUE} ${declared.expr} ${Console.WHITE}for ${declared.identifier}\n${Console.WHITE}")
+                    printDebug(s" ${Console.BOLD}=> substitute ${Console.BLUE} ${declared.expr} ${Console.WHITE}for ${declared.identifier}\n${Console.WHITE}")
                     declared.expr
                 } else {
                     declared.identifier

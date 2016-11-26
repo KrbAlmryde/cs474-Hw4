@@ -126,7 +126,6 @@ Defined Variables are:
 Free Variables are: b, a
 Bound Variables are: c, y, d, x, e
 ```
-
 ####Setting up from IntelliJ ####
 
 1) If no project is currently open in IntelliJ IDEA, click **Import Project** on the Welcome screen. Otherwise, select **File | New | Project from Existing Sources**.
@@ -139,65 +138,21 @@ Bound Variables are: c, y, d, x, e
 
 ---
 
-## Development Testing
-
-Some Example inputs and their evaluation steps
-```
->: (λc.λd.λe.c d e) (λx.λy.x) a b
- = (λc.λd.λe.c d e) (λx.λy.x) a b
- = (λd.λe.(λx.λy.x) d e) a b
- = (λe.(λx.λy.x) a e) b
- = (λx.λy.x) a b
- = (λy.a) b
- ~ a ~
-```
-
-```
-(λn.λx.λy.x(n x y)) (λn.λx.λy.x(n x y)) (λx.λy.x y)
-(λn.λx.λy.x (n x y)) (λn.λx.λy.x (n x y)) (λx.λy.x y)
-(λx.λy.x ((λn.λx.λy.x (n x y)) x y)) (λx.λy.x y)
-λy.(λx.λy.x y) ((λn.λx.λy.x (n x y)) (λx.λy.x y) y)
-λy.λy'.(λn.λx.λy.x (n x y)) (λx.λy.x y) y y'
-λy.λy'.(λx.λy.x ((λx.λy.x y) x y)) y y'
-λy.λy'.(λy'.y ((λx.λy.x y) y y')) y'
-λy.λy'.y ((λx.λy.x y) y y')
-λy.λy'.y ((λy'.y y') y')
-λy.λy'.y (y y')
-```
-```
-(λn.λx.λy.x(n x y)) ((λn.λx.λy.x(n x y)) ((λn.λx.λy.x(n x y)) (λx.λy.y)))
-(λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) (λx.λy.y)))
-λx.λy.x ((λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) (λx.λy.y)) x y)
-λx.λy.x ((λx.λy.x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y)) x y)
-λx.λy.x ((λy.x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y)) y)
-λx.λy.x (x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y))
-λx.λy.x (x ((λx.λy.x ((λx.λy.y) x y)) x y))
-λx.λy.x (x ((λy.x ((λx.λy.y) x y)) y))
-λx.λy.x (x (x ((λx.λy.y) x y)))
-λx.λy.x (x (x ((λy.y) y)))
-λx.λy.x (x (x y))
-```
-
-```
-(\m.\n.\f.\x.m f (n f x)) (\f.\x.f x) (\f.\x.f (f x))
-(λm.λn.λf.λx.m f (n f x)) (λf.λx.f x) (λf.λx.f (f x))
-(λn.λf.λx.(λf.λx.f x) f (n f x)) (λf.λx.f (f x))
-λf.λx.(λf.λx.f x) f ((λf.λx.f (f x)) f x)
-λf.λx.(λx.f x) ((λf.λx.f (f x)) f x)
-λf.λx.f ((λf.λx.f (f x)) f x)
-λf.λx.f ((λx.f (f x)) x)
-λf.λx.f (f (f x))
-```
-#### Unit Testing
-For Unit-testing I utilized Akka's Actor Testkit[ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. The Akka Testkit was no walk in the park though, so forgive the stupid simple tests.
-
-Go figure.
-
-To run the tests, in Intellij simplly select the **SBT** task "Test" and youll be up and running! Que sera
+### Discussion
+Unfortunately I had some trouble getting the parse to recognize symbols outside of Alpha-Numeric, so try not to input anything fancy like ````@ # $ % ^ & * + _ ```
+I had some semblance of assignments and definitions but it broke the rest of the parser, so it had to be sacrificed! It operates on Normal Order reduction, and I would 
+REALLY appreciate it if you tried to give it "proper input" See above if you arent sure what I mean by that. The parser will parse of course, but might not do as expected..
+Feel free to check out some of the unit tests for fancy operations.
 
 ---
 
-## Discussion:
+
+#### Unit Testing
+For Unit-testing I utilized [ScalaTest](http://www.scalatest.orge) using the [FunSuite](http://doc.scalatest.org/3.0.0/#org.scalatest.FunSuite). Its fun and was surprisingly simple to get it up and running. There are some half decent tests for once!
+
+Go figure.
+
+To run the tests, in Intellij simply type in the command line **```sbt test```** youll be up and running! Que sera
 
 ---
 
