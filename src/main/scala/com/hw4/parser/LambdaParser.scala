@@ -62,13 +62,13 @@ case class Application(funcExpr: Expression, argument: Expression) extends Expre
     override def toString = {
         // Left side
         (funcExpr match {
-            case Lambda(_, _) => "A(" + funcExpr + ")"
+            case Lambda(_, _) => "(" + funcExpr + ")"
             case _ => funcExpr
 
         // Right side
         }) + " " + (argument match {
             case Variable(_) => argument
-            case _ => "_A(" + argument + ")"
+            case _ => "(" + argument + ")"
 
         })
     }
@@ -116,16 +116,4 @@ class LambdaParser extends RegexParsers with PackratParsers{
             Variable("")
     }
 
-//    lazy val definitions:Parser[Map[Variable, Expression]] = repsep(defined, ";")  ^^ (definedVariables ++= _) //repsep(declared, ";") ^^ {case l => val ahh = Map()[Variable, Expression](l(0)._1, l(0)._2); ahh }
-
-//    def apply(str:String): Expression = parseAll(expression, str) match {
-//        case Success(result: Expression, _) => result
-//        case err:NoSuccess => println(s"Malformed input: " + err )
-//            Variable("")
-//    }
-//
 }
-
-
-
-//(λx.x (λx.λy.x)) ( (λc.λd.λe.e c d) a b )

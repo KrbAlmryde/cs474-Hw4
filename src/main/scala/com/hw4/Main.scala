@@ -14,7 +14,7 @@ object Main extends LambdaParser {
 
     def main(args: Array[String]): Unit = {
 
-        val evaluator = new LambdaEvaluator(false)
+        val evaluator = new LambdaEvaluator(false, false)
         println(instructions)
 
         while (true) {
@@ -23,26 +23,36 @@ object Main extends LambdaParser {
                 // Quit the Interpreter
                 case "q" | "quit" =>
                     println(s"${Console.YELLOW}Thanks for playing!")
-                    System.exit(0)
+                    return
 
                 // Display the Intructions
                 case "h" | "help" =>
                     println(instructions)
 
-                case "v" | "verbose" | "d" | "debug" =>
+                case "v" | "verbose" =>
                     evaluator.verbose = !evaluator.verbose
                     println(s"Verbose mode set to: ${evaluator.verbose}")
+
+                case "d" | "debug" =>
+                    evaluator.debug = !evaluator.debug
+                    println(s"Debug mode set to: ${evaluator.debug}")
+
                 case "def" | "defs" =>
                     println("definitions are:")
-                    evaluator.definitions.foreach( d => {
-                        println(s"${d._1} = ${d._2}")
-                    })
+                    evaluator.displayDefined()
 
                 // Parse the actual input!
                 case input: String =>
                     val parsed =  Main.parse(input)
                     val result = evaluator(parsed)
-                    println(s"\n>: $result :<")
+
+                    println(s"\n>: ${Console.BOLD}$result${Console.WHITE} :<")
+                    if (evaluator.verbose) {
+                        evaluator.report()
+
+                    }
+
+
             }
         }
 

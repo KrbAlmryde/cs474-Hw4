@@ -1,19 +1,53 @@
 /**
   * Created by krbalmryde on 11/18/16.
   */
-import com.hw4.parser.LambdaParser
+import com.hw4.evaluator.LambdaEvaluator
+import com.hw4.parser.{Application, Lambda, LambdaParser, Variable}
 import org.scalatest._
 
 
 class TestParser extends FunSuite with Matchers {
-    test("This test should fail because it has nothing with which to pass") {
-        val itsFalse = false
-        assert(itsFalse)
+    val evaluator = new LambdaEvaluator(false, false)
+    val parser = new LambdaParser()
+
+    test("no distinction between lambda x \\x λx") {
+        assert( evaluator(parser.parse("\\x.x")).toString == "λx.x")
+        assert( evaluator(parser.parse("lambda x.x")).toString == "λx.x")
+        assert( evaluator(parser.parse("λx.x")).toString == "λx.x")
     }
 
-//    test ("parse free variables") {
-//        val parser = new LambdaParser()
-//        parser.parse("x y z")
-//    }
+    test ("Free variable: Y") {
+        evaluator(parser.parse("\\f.f(f y) (\\x.x)(\\x.x)"))
+        assert( evaluator.freeVariables contains Variable("y") )
+        evaluator.freeVariables.clear() // so we dont muck up the scope
+    }
+
+    test("Free variables: square 3"){
+        evaluator(parser.parse("(lambda x.(lambda z.(x z)) 3) square"))
+        assert(evaluator.freeVariables == Set(Variable("square"), Variable("3")))
+        evaluator.freeVariables.clear() // so we dont muck up the scope
+    }
+
+    test("Something fancy"){
+        val expr1 = Application(Application(Variable("x"), Variable("y")), Application(Variable("x"), Variable("z")))
+        val expr2 = Lambda(Variable("x"), expr1)
+        println(expr2)
+    }
+    test("Bound variables: n, y, y', x") {
+        evaluator.boundVariables.clear() // juuuust in case
+
+        evaluator(parser.parse("(λn.λx.λy.x(n x y)) (λn.λx.λy.x(n x y)) (λx.λy.x y)"))
+        assert(evaluator.boundVariables == Set(Variable("n"), Variable("y"), Variable("y'"), Variable("x")))
+    }
+
+    test("beta reduction: (\\a.\\b.b a) c") {
+        val result = evaluator(parser.parse("(\\a.\\b.b a) c"))
+        assert(result.toString == "λb.b c")
+    }
+
+    test("Test eta conversion") {
+        assert( evaluator(parser.parse("\\x.abs x")).toString == "abs")
+    }
+
 
 }

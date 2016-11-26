@@ -9,15 +9,6 @@ import scala.util.parsing.combinator.{Parsers, RegexParsers}
   */
 
 package object Utils {
-    /*
-        Shorthand for color definitions to make things more readable
-        r: red
-        g: green
-        b: blue
-        y: yellow
-        l: white
-        w:
-     */
 
     val instructions =
         s"""
@@ -30,36 +21,18 @@ package object Utils {
           |            (λx.(λy.(x y)) 3) square
           |            (\\x.(\\y.(x y)) 3) square
           |${Console.WHITE}
-          |Available options include:
-          |     -v  For additional (re: verbose) information about the expression
-          |
-          |      Note: Options should follow an expression i.e.,
-          |${Console.BLUE}
-          |        (lambda x.(lambda y.(x y)) 3) square${Console.RED} -v${Console.BLUE}
-          |            (λx.(λy.(x y)) 3) square${Console.RED} -v${Console.BLUE}
-          |            (\\x.(\\y.(x y)) 3) square${Console.RED} -v
-          |${Console.WHITE}
           |Available commands include:
           |${Console.GREEN}
           |     q | quit ${Console.WHITE}=> Quit the application${Console.GREEN}
           |     h | help ${Console.WHITE}=> Display this help message again${Console.GREEN}
-          |     r | rules ${Console.WHITE}=> Display naming conventions and rules${Console.GREEN}
-          |     d | def ${Console.WHITE}=> Display user defined variables
+          |     v | verb ${Console.WHITE}=> Toggle each step in the evaluation.${Console.GREEN}
+          |     d | debug ${Console.WHITE}=> Toggle LOTS of information about the processing steps. Do this at your own risk!${Console.GREEN}
+          |     def ${Console.WHITE}=> Display user defined variables${Console.GREEN}
           |${Console.YELLOW}
-          |λ -- Starting the Lambda calculus Interpreter -- λ
+          |λ ---------------------------------------------- λ
           |
         """.stripMargin
 
-
-    /**
-      * Handy function that manages the logic of determining if the application should print output
-      * That is, if isVerbose is true, print the supplied string, otherwise dont.
-      * @param isVerbose Boolean: if true we should print, otherwise dont
-      * @param expr String: The string to be printed. String should include \n characters if needed
-      */
-    def printDebug(isVerbose:Boolean, expr:String): Unit = {
-        if(isVerbose) print(expr)
-    }
 
 
     /**

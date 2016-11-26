@@ -7,13 +7,43 @@ Author: **Kyle R. Almryde**
 This README documents the installation and usage for the cs474 HW4 tasked with developing an untyped lambda-calculus interpreter in scala. Read on!
 
 ### What is this repository for?
+Using the Scala Language, and the [Parsing Combinator Library](https://github.com/scala/scala-parser-combinators), this application parses untyped 
+lambda calculus of the form ```λx.x y (x z)```. It performs basic parsing under the rules of **Normal Order Reduction**, and can perform such steps 
+as **```α conversion```**, **```β reduction```**, and **```η converstion```**. Mind you, it doesnt do them all that great, but it does it, and thats 
+what counts here. 
 
 
 ### Libraries
++ [Parsing Combinator Library](https://github.com/scala/scala-parser-combinators) was used to perform all the heavy-lifting of parsing the input string
++ No joke, thats it!
 
 ---
 
 ## How do I get set up?
+To run the application, navigate to the project directory: ```kyle_almryde_hw3/``` then in the command-line enter ```sbt run```.
+ From there, you should see the following (assuming there were no exceptions)
+ 
+```
+λ -- Starting the Lambda calculus Interpreter -- λ
+
+To use this tool type an expression such as the following:
+
+      (lambda x.(lambda y.(x y)) 3) square
+            (λx.(λy.(x y)) 3) square
+            (\x.(\y.(x y)) 3) square
+
+Available commands include:
+
+     q | quit => Quit the application
+     h | help => Display this help message again
+     d | def => Display user defined variables
+     v | verb => Toggle LOTS of information about the processing steps.
+
+λ -- Starting the Lambda calculus Interpreter -- λ
+
+>:
+```
+
 
 ####Setting up from IntelliJ ####
 
@@ -31,13 +61,39 @@ This README documents the installation and usage for the cs474 HW4 tasked with d
 
 Some Example inputs and their evaluation steps
 ```
-> (λc.λd.λe.c d e) (λx.λy.x) a b
-= (λc.λd.λe.c d e) (λx.λy.x) a b
-= (λd.λe.(λx.λy.x) d e) a b
-= (λe.(λx.λy.x) a e) b
-= (λx.λy.x) a b
-= (λy.a) b
-= a
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+ = (λc.λd.λe.c d e) (λx.λy.x) a b
+ = (λd.λe.(λx.λy.x) d e) a b
+ = (λe.(λx.λy.x) a e) b
+ = (λx.λy.x) a b
+ = (λy.a) b
+ = a
+```
+
+```
+(λn.λx.λy.x(n x y)) (λn.λx.λy.x(n x y)) (λx.λy.x y)
+(λn.λx.λy.x (n x y)) (λn.λx.λy.x (n x y)) (λx.λy.x y)
+(λx.λy.x ((λn.λx.λy.x (n x y)) x y)) (λx.λy.x y)
+λy.(λx.λy.x y) ((λn.λx.λy.x (n x y)) (λx.λy.x y) y)
+λy.λy'.(λn.λx.λy.x (n x y)) (λx.λy.x y) y y'
+λy.λy'.(λx.λy.x ((λx.λy.x y) x y)) y y'
+λy.λy'.(λy'.y ((λx.λy.x y) y y')) y'
+λy.λy'.y ((λx.λy.x y) y y')
+λy.λy'.y ((λy'.y y') y')
+λy.λy'.y (y y')
+```
+```
+(λn.λx.λy.x(n x y)) ((λn.λx.λy.x(n x y)) ((λn.λx.λy.x(n x y)) (λx.λy.y)))
+(λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) (λx.λy.y)))
+λx.λy.x ((λn.λx.λy.x (n x y)) ((λn.λx.λy.x (n x y)) (λx.λy.y)) x y)
+λx.λy.x ((λx.λy.x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y)) x y)
+λx.λy.x ((λy.x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y)) y)
+λx.λy.x (x ((λn.λx.λy.x (n x y)) (λx.λy.y) x y))
+λx.λy.x (x ((λx.λy.x ((λx.λy.y) x y)) x y))
+λx.λy.x (x ((λy.x ((λx.λy.y) x y)) y))
+λx.λy.x (x (x ((λx.λy.y) x y)))
+λx.λy.x (x (x ((λy.y) y)))
+λx.λy.x (x (x y))
 ```
 
 ```
