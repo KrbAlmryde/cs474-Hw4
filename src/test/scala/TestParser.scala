@@ -28,11 +28,6 @@ class TestParser extends FunSuite with Matchers {
         evaluator.freeVariables.clear() // so we dont muck up the scope
     }
 
-    test("Something fancy"){
-        val expr1 = Application(Application(Variable("x"), Variable("y")), Application(Variable("x"), Variable("z")))
-        val expr2 = Lambda(Variable("x"), expr1)
-        println(expr2)
-    }
     test("Bound variables: n, y, y', x") {
         evaluator.boundVariables.clear() // juuuust in case
 

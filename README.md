@@ -20,7 +20,13 @@ what counts here.
 ---
 
 ## How do I get set up?
-To run the application, navigate to the project directory: ```kyle_almryde_hw3/``` then in the command-line enter ```sbt run```.
+To run the application, navigate to the project directory: 
+```
+cd kyle_almryde_hw3/
+sbt run
+# OR 
+sbt test
+```
  From there, you should see the following (assuming there were no exceptions)
  
 ```
@@ -36,14 +42,90 @@ Available commands include:
 
      q | quit => Quit the application
      h | help => Display this help message again
-     d | def => Display user defined variables
-     v | verb => Toggle LOTS of information about the processing steps.
+     v | verb => Toggle each step in the evaluation.
+     d | debug => Toggle LOTS of information about the processing steps. Do this at your own risk!
+     def => Display user defined variables
 
-λ -- Starting the Lambda calculus Interpreter -- λ
+λ ---------------------------------------------- λ
 
+```
+This will be followed immediately by a prompt
+```
+>:
+```
+Type your equation there! Note, It will continue to prompt you until you submit **```q | quit```**  
+
+For example
+```
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+```
+Sample output, assuming you do NOT set verbose mode would look like the following:
+```
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+ ~  a  ~
+```
+Noting that ```a``` is the result of the expression
+
+#####Verbose Mode
+```
+>: v
+Verbose mode set to: true
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+=> (λc.λd.λe.c d e) (λx.λy.x) a b
+=> (λd.λe.(λx.λy.x) d e) a b
+=> (λe.(λx.λy.x) a e) b
+=> (λx.λy.x) a b
+=> (λy.a) b
+=> a
+
+ ~  a  ~
+Defined Variables are:
+Free Variables are: b, a
+Bound Variables are: c, y, d, x, e 
+```
+#####Debug Mode
+```
+>: d
+Debug mode set to: true
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+=>  λx.λy.x for c
+=> *-β reduction-*
+=>  a for d
+=> *-β reduction-*
+=>  b for e
+=> *-β reduction-*
+=>  a for x
+=> *-β reduction-*
+=> *-β reduction-*
+~  a  ~
 >:
 ```
 
+#####Debug Mode AND Verbose Mode
+```
+>: (λc.λd.λe.c d e) (λx.λy.x) a b
+=> (λc.λd.λe.c d e) (λx.λy.x) a b
+=>  λx.λy.x for c
+=> *-β reduction-*
+=> (λd.λe.(λx.λy.x) d e) a b
+=>  a for d
+=> *-β reduction-*
+=> (λe.(λx.λy.x) a e) b
+=>  b for e
+=> *-β reduction-*
+=> (λx.λy.x) a b
+=>  a for x
+=> *-β reduction-*
+=> (λy.a) b
+=> *-β reduction-*
+=> a
+η(a)
+
+~  a  ~
+Defined Variables are:
+Free Variables are: b, a
+Bound Variables are: c, y, d, x, e
+```
 
 ####Setting up from IntelliJ ####
 
@@ -67,7 +149,7 @@ Some Example inputs and their evaluation steps
  = (λe.(λx.λy.x) a e) b
  = (λx.λy.x) a b
  = (λy.a) b
- = a
+ ~ a ~
 ```
 
 ```

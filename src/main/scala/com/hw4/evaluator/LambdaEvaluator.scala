@@ -21,23 +21,18 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
 
 
     def apply(expr: Expression):Expression = {
-        printVerb(s"   ${Console.BOLD}$expr\n")
+        printVerb(s"=> ${Console.BOLD}$expr\n")
         boundVariables ++= expr.boundVars
         freeVariables ++= expr.freeVars
 
         val beta = β(expr)
         if (beta != expr) {
-            printDebug(s"   $beta ${Console.RED}*-β reduction-*${Console.WHITE}\n")
-            val alpha = α(expr, freeVariables.toSet)
-            if (alpha != expr) {
-                printDebug(s"   $alpha ${Console.RED}*-α conversion-*${Console.WHITE}\n")
-                apply(alpha)
-            } else
-                apply(beta)
+            printDebug(s"${Console.BOLD}=> ${Console.RED}*-β reduction-*${Console.WHITE}\n")
+            apply(beta)
         }
         else {
             val eta = η(expr)
-            if( eta != expr) printDebug(s"   $eta ${Console.YELLOW}*-η conversion-* ${Console.WHITE}\n")
+            if( eta != expr) printDebug(s"${Console.BOLD}=> ${Console.YELLOW}*-η conversion-* ${Console.WHITE}\n")
             eta
         }
     }
@@ -58,12 +53,13 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
         val alpha = Variable(name + "'")
         if (conflicts contains alpha)
             rename(alpha, conflicts)
-        else
+        else{
+            printDebug(s"${Console.BOLD}=> $alpha ${Console.GREEN}*-α conversion-*${Console.WHITE}\n")
             alpha
+        }
     }
 
     def α(expr: Expression, conflicting: Set[Variable]): Expression = {
-        printDebug(s"\tα($expr) ${conflicting.mkString(", ")}\n")
         expr match {
             case name:Variable => hasDefinition(name)
 
@@ -78,7 +74,6 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
                 Application(α(funcExpr, conflicting), α(argExpr, conflicting))
 
             case _ =>
-//                println(s" α $expr")
                 expr
         }
     }
@@ -91,21 +86,22 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
 
             case Application(a, b) =>
                 val left = Application(β(a), b)
-                if (left != expr)
+                if (left != expr) {
                     left
-                else
+                } else {
                     Application(a, β(b))
+                }
 
-            case Lambda(arg, body) => Lambda(arg, β(body))
+            case Lambda(arg, body) => {
+                Lambda(arg, β(body))
+            }
             case _ =>
                 expr
-
         }
     }
 
 
     def η(expr: Expression): Expression = {
-        printDebug(s"η($expr)\n")
         expr match {
             case Lambda(x, Application(f, y)) if x == y =>
                 if (f.freeVars contains x) expr else f
@@ -142,7 +138,7 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
                     substitute(Assignment(name, defs), name, defs)
 
                 } else if (orig == name) {
-                    printVerb(s" ${Console.BOLD}=> ${Console.BLUE} $sub ${Console.WHITE}for $name\n")
+                    printDebug(s"${Console.BOLD}=> ${Console.BLUE} $sub ${Console.WHITE}for${Console.GREEN} $name\n${Console.WHITE}")
                     sub
                 } else {
                     name
@@ -150,7 +146,7 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
 
             case declared:Assignment =>
                 if (orig == declared.identifier) {
-                    printVerb(s" ${Console.BOLD}=> ${Console.BLUE} ${declared.expr} ${Console.WHITE}for ${declared.identifier}\n")
+                    printDebug(s" ${Console.BOLD}=> ${Console.BLUE} ${declared.expr} ${Console.WHITE}for ${declared.identifier}\n${Console.WHITE}")
                     declared.expr
                 } else {
                     declared.identifier
@@ -178,9 +174,8 @@ class LambdaEvaluator(var verbose:Boolean, var debug:Boolean) {
     }
 
     def report(): Unit = {
-        displayDefined()
-        println(s"${Console.WHITE}Free Variables are: ${Console.BOLD}" + freeVariables.mkString(", "))
-        println(s"${Console.WHITE}Bound Variables are: ${Console.BOLD}" + boundVariables.mkString(", "))
+        println(s"${Console.WHITE}Free Variables are: ${Console.GREEN}" + freeVariables.mkString(", ") + Console.WHITE)
+        println(s"${Console.WHITE}Bound Variables are: ${Console.BLUE}" + boundVariables.mkString(", ") + Console.WHITE)
         freeVariables.clear
         boundVariables.clear
     }

@@ -31,22 +31,18 @@ object Main extends LambdaParser {
 
                 case "v" | "verbose" =>
                     evaluator.verbose = !evaluator.verbose
-                    println(s"Verbose mode set to: ${evaluator.verbose}")
+                    println(s"${Console.GREEN}Verbose mode set to: ${evaluator.verbose}${Console.WHITE}")
 
                 case "d" | "debug" =>
                     evaluator.debug = !evaluator.debug
-                    println(s"Debug mode set to: ${evaluator.debug}")
-
-                case "def" | "defs" =>
-                    println("definitions are:")
-                    evaluator.displayDefined()
+                    println(s"${Console.GREEN}Debug mode set to: ${evaluator.debug}${Console.WHITE}")
 
                 // Parse the actual input!
                 case input: String =>
                     val parsed =  Main.parse(input)
                     val result = evaluator(parsed)
 
-                    println(s"\n>: ${Console.BOLD}$result${Console.WHITE} :<")
+                    println(s" ${Console.YELLOW}~  $result  ~${Console.WHITE}")
                     if (evaluator.verbose) {
                         evaluator.report()
 

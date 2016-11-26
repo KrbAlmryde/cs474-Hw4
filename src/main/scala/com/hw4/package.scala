@@ -27,7 +27,6 @@ package object Utils {
           |     h | help ${Console.WHITE}=> Display this help message again${Console.GREEN}
           |     v | verb ${Console.WHITE}=> Toggle each step in the evaluation.${Console.GREEN}
           |     d | debug ${Console.WHITE}=> Toggle LOTS of information about the processing steps. Do this at your own risk!${Console.GREEN}
-          |     def ${Console.WHITE}=> Display user defined variables${Console.GREEN}
           |${Console.YELLOW}
           |λ ---------------------------------------------- λ
           |
